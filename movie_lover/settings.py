@@ -29,6 +29,30 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'movie_app': {  # Replace with your app's name
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 INSTALLED_APPS = [
     'movie_app.apps.MovieAppConfig',

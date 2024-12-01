@@ -30,17 +30,29 @@
 <!-- Pagination Links -->
 <div class="pagination">
     <span class="step-links">
+        <!-- First Page Link -->
         {% if page_obj.has_previous %}
             <a href="?page=1&sort_by={{ request.GET.sort_by }}">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}&sort_by={{ request.GET.sort_by }}">Previous</a>
         {% endif %}
 
+        <!-- Previous 3 Pages -->
+        {% for page_num in previous_pages %}
+            <a href="?page={{ page_num }}&sort_by={{ request.GET.sort_by }}">{{ page_num }}</a>
+        {% endfor %}
+
+        <!-- Current Page -->
         <span class="current">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
         </span>
 
+        <!-- Next 3 Pages -->
+        {% for page_num in next_pages %}
+            <a href="?page={{ page_num }}&sort_by={{ request.GET.sort_by }}">{{ page_num }}</a>
+        {% endfor %}
+
+
+        <!-- Last Page Link -->
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&sort_by={{ request.GET.sort_by }}">Next</a>
             <a href="?page={{ page_obj.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}">Last</a>
         {% endif %}
     </span>

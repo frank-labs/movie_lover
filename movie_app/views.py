@@ -10,6 +10,10 @@ from .models import Movie
 from django.shortcuts import render
 from django.views import generic
 from .models import Movie
+import logging
+
+# Get a logger instance
+logger = logging.getLogger(__name__)
 
 class IndexView(generic.ListView):
     model = Movie
@@ -30,10 +34,22 @@ class IndexView(generic.ListView):
             queryset = queryset.order_by(sort_by)
         else:
             queryset = queryset.order_by('date_uploaded')  # Default sorting
-        print("Queryset before returning:", queryset)
+        # print("Queryset before returning:", queryset)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_obj = context['page_obj']
+        current_page = page_obj.number
 
+        # Determine the range for previous and next pages
+        previous_pages = [num for num in page_obj.paginator.page_range if num < current_page and current_page - num <= 3]
+        next_pages = [num for num in page_obj.paginator.page_range if num > current_page and num - current_page <= 3]
+
+        # Add them to the context
+        context['previous_pages'] = previous_pages
+        context['next_pages'] = next_pages
+        return context
 
 class DetailView(generic.DetailView):
     model = Movie
