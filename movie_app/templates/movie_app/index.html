@@ -30,21 +30,22 @@
 <!-- Pagination Links -->
 <div class="pagination">
     <span class="step-links">
-        {% if movies.has_previous %}
-        <a href="?page=1&sort_by={{ request.GET.sort_by }}">First</a>
-        <a href="?page={{ movies.previous_page_number }}&sort_by={{ request.GET.sort_by }}">Previous</a>
+        {% if page_obj.has_previous %}
+            <a href="?page=1&sort_by={{ request.GET.sort_by }}">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}&sort_by={{ request.GET.sort_by }}">Previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ movies.number }} of {{ movies.paginator.num_pages }}.
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
         </span>
 
-        {% if movies.has_next %}
-        <a href="?page={{ movies.next_page_number }}&sort_by={{ request.GET.sort_by }}">Next</a>
-        <a href="?page={{ movies.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}">Last</a>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&sort_by={{ request.GET.sort_by }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}">Last</a>
         {% endif %}
     </span>
 </div>
+
 {% endblock %} <!-- Close the content block here -->
 
 {% block styles %}

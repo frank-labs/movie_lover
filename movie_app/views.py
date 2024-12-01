@@ -30,7 +30,7 @@ class IndexView(generic.ListView):
             queryset = queryset.order_by(sort_by)
         else:
             queryset = queryset.order_by('date_uploaded')  # Default sorting
-
+        print("Queryset before returning:", queryset)
         return queryset
 
 

@@ -4,3 +4,6 @@ movie_app/__pycache__
 movie_app/migrations/__pycache__
 movie_lover/__pycache__
 movie_lover/_pycache_
+fetch_movies.py
+movie_lover/__pycache__/settings.cpython-312.pyc
+movie_lover/__pycache__/urls.cpython-312.pyc
