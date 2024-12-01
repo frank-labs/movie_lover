@@ -1,8 +1,6 @@
-movie_lover/.my_pgpass
-movie_lover/.pg_service.conf
 ./fetch_movies.py
 movie_app/_pycache_
 movie_app/__pycache__
 movie_app/migrations/__pycache__
 movie_lover/__pycache__
-# movie_lover/_pycache_
+movie_lover/_pycache_

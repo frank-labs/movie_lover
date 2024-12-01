@@ -1,0 +1,24 @@
+<!-- movie_app/templates/base_generic.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Movie Lover{% endblock %}</title>
+  {% block styles %}{% endblock %}
+</head>
+<body>
+  <header>
+    <h1><a href="{% url 'index' %}">Movie Lover</a></h1>
+  </header>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Movie Lover</p>
+  </footer>
+</body>
+</html>

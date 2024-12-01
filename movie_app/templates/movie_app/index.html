@@ -1,0 +1,82 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Movies List</h1>
+<!-- Sorting Links -->
+<div>
+    <a href="?sort_by=date_uploaded">Sort by Date</a> |
+    <a href="?sort_by=rating">Sort by Rating</a> |
+    <a href="?sort_by=year">Sort by Year</a>
+</div>
+<!-- Movies Grid -->
+<div class="movies-grid">
+    {% for movie in movies %}
+    <div class="movie-item">
+        <!-- Link the image to the detail page -->
+        <a href="{% url 'detail' movie.pk %}">
+            <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}">
+        </a>
+        <!-- Link the title to the detail page -->
+        <a href="{% url 'detail' movie.pk %}">
+            <h2>{{ movie.title }}</h2>
+        </a>
+        <p>Rating: {{ movie.rating }}</p>
+        <p>Year: {{ movie.year }}</p>
+        <p>Uploaded on: {{ movie.date_uploaded }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination Links -->
+<div class="pagination">
+    <span class="step-links">
+        {% if movies.has_previous %}
+        <a href="?page=1&sort_by={{ request.GET.sort_by }}">First</a>
+        <a href="?page={{ movies.previous_page_number }}&sort_by={{ request.GET.sort_by }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ movies.number }} of {{ movies.paginator.num_pages }}.
+        </span>
+
+        {% if movies.has_next %}
+        <a href="?page={{ movies.next_page_number }}&sort_by={{ request.GET.sort_by }}">Next</a>
+        <a href="?page={{ movies.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}">Last</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %} <!-- Close the content block here -->
+
+{% block styles %}
+<style>
+    .movies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  /* Automatically adjusts columns based on screen width */
+        gap: 20px;  /* Space between the items */
+        padding: 20px;
+    }
+
+    .movie-item {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .movie-item img {
+        width: 100%;  /* Make the image take the full width of the item */
+        height: auto;  /* Ensure the image maintains its aspect ratio */
+    }
+
+    .movie-item h2 {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+
+    .movie-item p {
+        font-size: 1em;
+        color: #666;
+    }
+</style>
+{% endblock %}

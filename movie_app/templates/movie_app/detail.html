@@ -1,0 +1,48 @@
+<!-- movie_app/templates/movie_app/detail.html -->
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="movie-detail">
+    <h1>{{ movie.title }}</h1>
+    <p><strong>Year:</strong> {{ movie.year }}</p>
+    <p><strong>Genres:</strong> 
+      {% for genre in movie.genres %}
+        {{ genre }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p><strong>Rating:</strong> {{ movie.rating }}</p>
+    <p><strong>Runtime:</strong> {{ movie.runtime }} minutes</p>
+    <p><strong>Description:</strong> {{ movie.description_full }}</p>
+    <p><strong>Language:</strong> {{ movie.language }}</p>
+    <p><strong>MPA Rating:</strong> {{ movie.mpa_rating }}</p>
+
+    <div class="movie-images">
+      <img src="{{ movie.large_cover_image }}" alt="{{ movie.title }}" class="movie-image-large">
+      <img src="{{ movie.background_image }}" alt="{{ movie.title }} Background" class="movie-background-image">
+    </div>
+
+    <h3>Watch Trailer:</h3>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.yt_trailer_code }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+{% endblock %}
+
+{% block styles %}
+  <style>
+    .movie-detail {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .movie-images img {
+      width: 100%;
+      max-width: 500px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .movie-image-large {
+      margin-bottom: 20px;
+    }
+  </style>
+{% endblock %}
