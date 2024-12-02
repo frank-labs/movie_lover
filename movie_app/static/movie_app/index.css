@@ -1,0 +1,68 @@
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .movie-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .movie-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .movie-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  /* Darken the image on hover */
+  .movie-item:hover .movie-image {
+    filter: brightness(50%); /* Darken the image */
+  }
+  
+  /* Play icon centered in the middle */
+  .overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Movie title at the bottom */
+  .movie-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Show play icon and movie title when hovering over the movie item */
+  .movie-item:hover .overlay {
+    opacity: 1; /* Show play icon */
+  }
+  
+  .movie-item:hover .movie-title {
+    opacity: 1; /* Show movie title */
+  }

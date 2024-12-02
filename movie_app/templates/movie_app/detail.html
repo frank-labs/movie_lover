@@ -1,48 +1,98 @@
-<!-- movie_app/templates/movie_app/detail.html -->
-
 {% extends "base_generic.html" %}
-
-{% block content %}
-  <div class="movie-detail">
-    <h1>{{ movie.title }}</h1>
-    <p><strong>Year:</strong> {{ movie.year }}</p>
-    <p><strong>Genres:</strong> 
-      {% for genre in movie.genres %}
-        {{ genre }}{% if not forloop.last %}, {% endif %}
-      {% endfor %}
-    </p>
-    <p><strong>Rating:</strong> {{ movie.rating }}</p>
-    <p><strong>Runtime:</strong> {{ movie.runtime }} minutes</p>
-    <p><strong>Description:</strong> {{ movie.description_full }}</p>
-    <p><strong>Language:</strong> {{ movie.language }}</p>
-    <p><strong>MPA Rating:</strong> {{ movie.mpa_rating }}</p>
-
-    <div class="movie-images">
-      <img src="{{ movie.large_cover_image }}" alt="{{ movie.title }}" class="movie-image-large">
-      <img src="{{ movie.background_image }}" alt="{{ movie.title }} Background" class="movie-background-image">
-    </div>
-
-    <h3>Watch Trailer:</h3>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.yt_trailer_code }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>
-{% endblock %}
-
+{% load static %}
 {% block styles %}
-  <style>
-    .movie-detail {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
-    .movie-images img {
-      width: 100%;
-      max-width: 500px;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
-    .movie-image-large {
-      margin-bottom: 20px;
-    }
-  </style>
+<link rel="stylesheet" href="{% static 'movie_app/detail.css' %}">
 {% endblock %}
+{% block content %}
+
+<div class="row">
+    <!-- Movie Video Section -->
+    <div class="col-md-7">
+        <div class="row">
+            <iframe class="video-player" width="100%" height="450"
+                src="https://www.youtube.com/embed/{{ movie.yt_trailer_code }}" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <!-- Movie Details Section -->
+        <div class="row">
+            <div class="col-3">
+                <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid rounded shadow">
+            </div>
+            <div class="col">
+                <h4 class="movie-title mb-3">{{ movie.title }}</h4>
+                <p class="movie-description">{{ movie.summary }}</p>
+                <div class="row">
+                    <!-- Left Column: Genres, Year, Language -->
+                    <div class="col">
+                        <p><strong>Genres:</strong> {{ movie.genres|join:", " }}</p>
+                        <p><strong>Year:</strong> {{ movie.year }}</p>
+                        <p><strong>Language:</strong> {{ movie.language }}</p>
+                    </div>
+
+                    <!-- Right Column: Rating, Runtime, IMDb Link -->
+                    <div class="col">
+                        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+                        <p> <strong>Runtime:</strong>{{ movie.runtime }}</p>
+                        <p>
+                            <strong>IMDb:</strong>
+                            <a href="https://www.imdb.com/title/{{ movie.imdb_code }}/" target="_blank">View on IMDb</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Row for Additional Movie Properties -->
+
+        </div>
+    </div>
+    <!-- Suggested Videos Section (Full Height) -->
+    <div class="col-md-4 suggested-videos-panel">
+        <div class="suggested-videos">
+            <h5>Suggested Videos</h5>
+            <div class="row">
+                {% for movie in suggested_movies|slice:":4" %}
+                    <div class="col-6 mb-3">
+                        <a href="{% url 'detail' movie.id %}">
+                            <div class="position-relative">
+                                <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
+                                <div class="overlay">
+                                    <i class="bi bi-play-circle"></i> <!-- Play icon -->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>No suggested movies available.</p>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Additional Suggested Videos Section (Remaining Movies) -->
+<div class="row">
+    <div class="col-12">
+        <h5>Other Suggested Videos</h5>
+        <div class="row">
+            {% for movie in suggested_movies|slice:"4:" %}
+                <div class="col-2">
+                    <a href="{% url 'detail' movie.id %}">
+                        <div class="position-relative">
+                            <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
+                            <div class="overlay">
+                                <i class="bi bi-play-circle"></i> <!-- Play icon -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p>No more suggested movies available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+    {% endblock %}
