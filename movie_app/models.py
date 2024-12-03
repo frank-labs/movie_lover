@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import json
 
 class Movie(models.Model):
@@ -28,6 +29,8 @@ class Movie(models.Model):
     torrents = models.JSONField(blank=True, null=True)  # Store torrents as JSON
     date_uploaded = models.DateTimeField(blank=True, null=True)  # Date uploaded
     date_uploaded_unix = models.BigIntegerField(blank=True, null=True)  # Unix timestamp for upload time
+    starred_by = models.ManyToManyField(User, related_name='starred_movies', blank=True)
+    watch_later_by = models.ManyToManyField(User, related_name='watch_later_movies', blank=True)
 
     class Meta:
         db_table = 'movies'  # Specifies that this model maps to the 'movies' table
@@ -45,11 +48,16 @@ class Movie(models.Model):
         models.Index(fields=['language']),
         ]
 
-
-
     def __str__(self):
         return self.title if self.title else "Unnamed Movie"
+class Collection(models.Model):
+    user = models.ForeignKey(User, related_name='collections', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    movies = models.ManyToManyField(Movie, related_name='collections', blank=True)
 
+    def __str__(self):
+        return f"Collection: {self.name} by {self.user.username}"
 # class MovieAdmin(admin.ModelAdmin):
 #     search_fields = ['title', 'imdb_code', 'slug']
 #     list_filter = ['year', 'rating']
