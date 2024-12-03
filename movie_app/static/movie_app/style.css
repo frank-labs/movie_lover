@@ -1,0 +1,17 @@
+
+  .container {
+    /* margin: 0 20px; */
+    width: 90%;
+    max-width: 100%;
+  }
+
+  .navbar .input-group input {
+    width: 300px; /* Adjust the width as needed */
+    border-radius: 50px;
+  }
+  .navbar .input-group button {
+    border-radius: 50px; /* Make the button more rounded */
+    padding-left: 20px; /* Optional: Adjust padding to center the icon better */
+    padding-right: 20px;
+ }
+
