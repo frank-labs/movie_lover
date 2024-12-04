@@ -15,6 +15,21 @@
                 allowfullscreen>
             </iframe>
         </div>
+        <div class="row">
+            <div class="col text-end">
+                <!-- Watch Later Button -->
+                <button id="watch-later-btn" class="btn btn-outline-secondary me-2" data-movie-id="{{ movie.id }}">
+                    <i id="watch-later-icon"
+                        class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
+                    </i>
+                    {% if is_watch_later %} In Watch Later  {% else %}  Added to Watch Later{% endif %}
+                </button>
+                <!-- Add to Button -->
+                <button class="btn btn-outline-secondary">
+                    <i class="bi bi-plus"></i> Add to
+                </button>
+            </div>
+        </div>
         <!-- Movie Details Section -->
         <div class="row">
             <div class="col-3">
@@ -52,31 +67,7 @@
             <h5>Suggested Videos</h5>
             <div class="row">
                 {% for movie in suggested_movies|slice:":4" %}
-                    <div class="col-6 mb-3">
-                        <a href="{% url 'detail' movie.id %}">
-                            <div class="position-relative">
-                                <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
-                                <div class="overlay">
-                                    <i class="bi bi-play-circle"></i> <!-- Play icon -->
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                {% empty %}
-                    <p>No suggested movies available.</p>
-                {% endfor %}
-            </div>
-            
-        </div>
-    </div>
-</div>
-<!-- Additional Suggested Videos Section (Remaining Movies) -->
-<div class="row">
-    <div class="col-12">
-        <h5>Other Suggested Videos</h5>
-        <div class="row">
-            {% for movie in suggested_movies|slice:"4:" %}
-                <div class="col-2">
+                <div class="col-6 mb-3">
                     <a href="{% url 'detail' movie.id %}">
                         <div class="position-relative">
                             <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
@@ -86,8 +77,32 @@
                         </div>
                     </a>
                 </div>
+                {% empty %}
+                <p>No suggested movies available.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Additional Suggested Videos Section (Remaining Movies) -->
+<div class="row">
+    <div class="col-12">
+        <h5>Other Suggested Videos</h5>
+        <div class="row">
+            {% for movie in suggested_movies|slice:"4:" %}
+            <div class="col-2">
+                <a href="{% url 'detail' movie.id %}">
+                    <div class="position-relative">
+                        <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
+                        <div class="overlay">
+                            <i class="bi bi-play-circle"></i> <!-- Play icon -->
+                        </div>
+                    </div>
+                </a>
+            </div>
             {% empty %}
-                <p>No more suggested movies available.</p>
+            <p>No more suggested movies available.</p>
             {% endfor %}
         </div>
     </div>
@@ -95,4 +110,4 @@
 
 
 
-    {% endblock %}
+{% endblock %}
