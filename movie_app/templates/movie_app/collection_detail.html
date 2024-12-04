@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>Collection: {{ collection.name }}</h2>
+  <p>{{ collection.description }}</p>
+
+  <h3>Movies in this collection:</h3>
+  <ul>
+    {% for movie in collection.movies.all %}
+      <li>{{ movie.title }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'collection_list' %}">Back to Collections</a>
+{% endblock %}
