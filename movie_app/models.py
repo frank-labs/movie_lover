@@ -29,7 +29,6 @@ class Movie(models.Model):
     torrents = models.JSONField(blank=True, null=True)  # Store torrents as JSON
     date_uploaded = models.DateTimeField(blank=True, null=True)  # Date uploaded
     date_uploaded_unix = models.BigIntegerField(blank=True, null=True)  # Unix timestamp for upload time
-    starred_by = models.ManyToManyField(User, related_name='starred_movies', blank=True)
     watch_later_by = models.ManyToManyField(User, related_name='watch_later_movies', blank=True)
 
     class Meta:
