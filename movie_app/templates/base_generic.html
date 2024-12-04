@@ -73,21 +73,16 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
               <li><a class="dropdown-item" href="#">Collections</a></li>
               <li><a class="dropdown-item" href="#">Saved</a></li>
-              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
           </li>
           {% else %}
           <!-- Login and Register Buttons -->
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Register</a>
-          </li>
-          {% endif %}
-          {% if not user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login / Register</a>
+            <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
           </li>
           {% endif %}
 
@@ -96,24 +91,6 @@
       </div>
     </div>
   </nav>
-  <!-- Modal for Login/Register -->
-  <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="authModalLabel">Login/Register</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- You can include the login or register form here -->
-          <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <!-- Add your form fields here -->
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Content Area -->
   <div class="container">
@@ -129,6 +106,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js" charset="utf-8" async></script>
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Add CSRF token to every fetch request
+    document.cookie.split("; ").forEach(function (cookie) {
+        if (cookie.startsWith("csrftoken=")) {
+            const csrfToken = cookie.split("=")[1];
+            window.csrfToken = csrfToken;
+        }
+    });
+</script>
+
 </body>
 
 </html>
