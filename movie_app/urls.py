@@ -10,4 +10,6 @@ urlpatterns = [
     path('collections/', CollectionListView.as_view(), name='collection_list'),  # List collections
     path('collections/<int:pk>/', CollectionDetailView.as_view(), name='collection_detail'),  
     path('toggle-watch-later/<int:movie_id>/', toggle_watch_later, name='toggle_watch_later'),
+    path('watch-later/', views.WatchLaterView.as_view(), name='watch_later'),
+    path('movies/genre/<str:genre_name>/', views.IndexView.as_view(), name='movies_by_genre'),  # Genre-based movie listing
 ]
