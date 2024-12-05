@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'movie_app/detail.css' %}">
 {% endblock %}
 {% block content %}
-
+{% load movie_filters %}
 <div class="row">
     <!-- Movie Video Section -->
     <div class="col-md-7">
@@ -22,7 +22,7 @@
                     <i id="watch-later-icon"
                         class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
                     </i>
-                    {% if is_watch_later %} In Watch Later  {% else %}  Added to Watch Later{% endif %}
+                    {% if is_watch_later %} In Watch Later {% else %} Added to Watch Later{% endif %}
                 </button>
                 <!-- Add to Button -->
                 <button class="btn btn-outline-secondary">
@@ -41,7 +41,13 @@
                 <div class="row">
                     <!-- Left Column: Genres, Year, Language -->
                     <div class="col">
-                        <p><strong>Genres:</strong> {{ movie.genres|join:", " }}</p>
+                        <p><strong>Genres:</strong>
+                            {% for genre in movie.genres.all %}
+                                <a href="{% url 'movies_by_genre' genre_name=genre.name %}">{{ genre.name }}</a>
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        
                         <p><strong>Year:</strong> {{ movie.year }}</p>
                         <p><strong>Language:</strong> {{ movie.language }}</p>
                     </div>
@@ -49,7 +55,7 @@
                     <!-- Right Column: Rating, Runtime, IMDb Link -->
                     <div class="col">
                         <p><strong>Rating:</strong> {{ movie.rating }}</p>
-                        <p> <strong>Runtime:</strong>{{ movie.runtime }}</p>
+                        <p><strong>Runtime:</strong> {{ movie.runtime|format_runtime }}</p>
                         <p>
                             <strong>IMDb:</strong>
                             <a href="https://www.imdb.com/title/{{ movie.imdb_code }}/" target="_blank">View on IMDb</a>
