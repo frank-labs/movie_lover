@@ -11,6 +11,7 @@
     <a href="?sort_by=year">Sort by Year</a>
 </div>
 <!-- Movies Grid -->
+<h1>{% if genre %}Movies in {{ genre.name }}{% else %}All Movies{% endif %}</h1>
 <div class="movies-grid">
     {% for movie in movies %}
     <div class="movie-item">
