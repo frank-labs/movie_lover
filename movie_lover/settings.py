@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-mwil(r3u3couvm+)l*y)oa+d@+_elim#zan9t%va@y7ugc(#%u
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SOCIALACCOUNT_AUTO_SIGNUP = False
 ALLOWED_HOSTS = []
 
 
@@ -90,11 +90,11 @@ INTERNAL_IPS = [
     # ...
 ]
 ROOT_URLCONF = 'movie_lover.urls'
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,6 +102,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'movie_app.context_processors.genres_context',
             ],
         },
     },
@@ -126,7 +127,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "OPTIONS": {
             "service": "my_service",
-            "passfile": ".my_pgpass",
+            "passfile": "~/.my_pgpass",
         },
     }
 }
