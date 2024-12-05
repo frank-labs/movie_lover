@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-mwil(r3u3couvm+)l*y)oa+d@+_elim#zan9t%va@y7ugc(#%u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SOCIALACCOUNT_AUTO_SIGNUP = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.194']
 
 
 # Application definition
@@ -87,6 +87,8 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
+    "localhost",
+    "192.168.0.194"
     # ...
 ]
 ROOT_URLCONF = 'movie_lover.urls'
