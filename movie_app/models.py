@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 import json
 
+class Genre(models.Model):
+    name = models.CharField(max_length=50, unique=True)  # Unique genre name
+
+    def __str__(self):
+        return self.name
+    
 class Movie(models.Model):
     id = models.BigIntegerField(primary_key=True)  # ID from the API, not auto-incremented
     url = models.URLField(max_length=400,blank=True)  # URL to the movie's page
@@ -13,7 +19,7 @@ class Movie(models.Model):
     year = models.IntegerField(blank=True, null=True)
     rating = models.FloatField(blank=True, null=True)
     runtime = models.IntegerField(blank=True, null=True)  # Runtime in minutes
-    genres = models.JSONField(blank=True, null=True)  # Store genres as JSON
+    genre_json = models.JSONField(blank=True, null=True)  # Store genres as JSON
     summary = models.TextField(blank=True, null=True)  # Long text
     description_full = models.TextField(blank=True, null=True)
     synopsis = models.TextField(blank=True, null=True)
@@ -30,7 +36,7 @@ class Movie(models.Model):
     date_uploaded = models.DateTimeField(blank=True, null=True)  # Date uploaded
     date_uploaded_unix = models.BigIntegerField(blank=True, null=True)  # Unix timestamp for upload time
     watch_later_by = models.ManyToManyField(User, related_name='watch_later_movies', blank=True)
-
+    genres = models.ManyToManyField(Genre)
     class Meta:
         db_table = 'movies'  # Specifies that this model maps to the 'movies' table
         indexes = [
@@ -49,6 +55,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title if self.title else "Unnamed Movie"
+    
+
+    
 class Collection(models.Model):
     user = models.ForeignKey(User, related_name='collections', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
