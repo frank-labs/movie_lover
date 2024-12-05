@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from django.core.paginator import Paginator
 from django.db.models import F, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -19,7 +19,8 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Movie
+from .models import Movie,Genre
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class IndexView(generic.ListView):
     model = Movie
@@ -29,13 +30,14 @@ class IndexView(generic.ListView):
 
     # This method allows sorting by different properties
     def get_queryset(self):
-        # Annotate movies with the maximum seeds value
-        queryset = Movie.objects.annotate(
-            max_seeds=Subquery(
-                Movie.objects.filter(id=OuterRef('id'))
-                .values_list('torrents__seeds', flat=True)  # Extract seeds from torrents
-            )
-        ).order_by('-max_seeds')  # Order by the maximum seeds descending
+        # Start with all movies
+        queryset = Movie.objects.all().order_by('-date_uploaded')
+
+        # Filter by genre if a genre is specified in the URL
+        genre_name = self.kwargs.get('genre_name')
+        if genre_name:
+            genre = get_object_or_404(Genre, name=genre_name)
+            queryset = queryset.filter(genres=genre)
 
         return queryset
 
@@ -51,6 +53,12 @@ class IndexView(generic.ListView):
         # Add them to the context
         context['previous_pages'] = previous_pages
         context['next_pages'] = next_pages
+        
+        # Optionally pass the genre filter
+        genre_name = self.kwargs.get('genre_name')
+        if genre_name:
+            context['genre'] = get_object_or_404(Genre, name=genre_name)
+
         return context
 
 class DetailView(generic.DetailView):
@@ -78,16 +86,6 @@ class DetailView(generic.DetailView):
             context['is_watch_later'] = False
         
         return context
-    
-def star_movie(request, movie_id):
-    movie = Movie.objects.get(id=movie_id)
-    user = request.user
-    if user in movie.starred_by.all():
-        movie.starred_by.remove(user)
-    else:
-        movie.starred_by.add(user)
-    return redirect('detail', movie_id=movie.id)
-
 
 class CollectionListView(generic.ListView):
     model = Collection
@@ -133,3 +131,15 @@ def toggle_watch_later(request, movie_id):
         added = True
 
     return JsonResponse({'added': added})
+
+class WatchLaterView(LoginRequiredMixin, generic.ListView):
+    template_name = "movie_app/index.html"  # Reuse the IndexView template
+    context_object_name = "movies"
+    paginate_by = 10  # Optional: Add pagination if necessary
+
+    def get_queryset(self):
+        """
+        Filter movies that the current user has added to their 'Watch Later' list.
+        """
+        return self.request.user.watch_later_movies.all()
+    
