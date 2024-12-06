@@ -15,3 +15,8 @@
     padding-right: 20px;
  }
 
+ .provider-logo {
+  max-height: 50px; /* Limit the height of the image */
+  width: auto; /* Maintain the aspect ratio */
+  object-fit: contain; /* Ensure the image is not stretched or distorted */
+}
