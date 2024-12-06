@@ -11,10 +11,10 @@
     <a href="?sort_by=year">Sort by Year</a>
 </div>
 <!-- Movies Grid -->
-<h1>{% if genre %}Movies in {{ genre.name }}{% else %}All Movies{% endif %}</h1>
+<h1>{% if genre %}Movies in {{ genre.name }}{% else %}My Watch Later Movies{% endif %}</h1>
 <div class="movies-grid">
     {% for movie in movies %}
-    <div class="movie-item">
+    <div class="movie-item position-relative">
         <!-- Link the image to the detail page -->
         <a href="{% url 'detail' movie.pk %}" class="movie-link">
             <div class="movie-image-container">
@@ -25,6 +25,16 @@
                 <div class="movie-title">{{ movie.title }}</div>
             </div>
         </a>
+
+        <!-- Red "X" Button -->
+        {% if is_watch_later_view %}
+        <button 
+            class="remove-watch-later-btn btn btn-danger position-absolute top-0 end-0"
+            data-movie-id="{{ movie.id }}" 
+            title="Remove from Watch Later">
+            &times;
+        </button>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

@@ -142,4 +142,25 @@ class WatchLaterView(LoginRequiredMixin, generic.ListView):
         Filter movies that the current user has added to their 'Watch Later' list.
         """
         return self.request.user.watch_later_movies.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_watch_later_view'] = True  # Pass the flag to the template
+        return context
+    
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+class RemoveWatchLaterView(LoginRequiredMixin, View):
+    def post(self, request, movie_id):
+        """
+        Remove the movie from the user's Watch Later list.
+        """
+        try:
+            movie = request.user.watch_later_movies.get(pk=movie_id)
+            request.user.watch_later_movies.remove(movie)
+            return JsonResponse({"success": True})
+        except:
+            return JsonResponse({"success": False}, status=400)
     
