@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+from decouple import config
+
 
 from pathlib import Path
 
@@ -23,9 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mwil(r3u3couvm+)l*y)oa+d@+_elim#zan9t%va@y7ugc(#%u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Use environment variable for DEBUG setting
+DEBUG = config('DEBUG', default=True, cast=bool)
+
 SOCIALACCOUNT_AUTO_SIGNUP = False
-ALLOWED_HOSTS = ['localhost','192.168.0.194','0.0.0.0','127.0.0.1','172.245.30.226','optiontruth.com','movielover.optiontruth.com']
+ALLOWED_HOSTS = ['localhost','192.168.0.194','0.0.0.0','127.0.0.1','optiontruth.com','movielover.optiontruth.com']
 
 
 # Application definition
