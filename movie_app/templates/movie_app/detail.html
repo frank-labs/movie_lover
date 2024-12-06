@@ -17,19 +17,30 @@
         </div>
         <div class="row">
             <div class="col text-end">
-                <!-- Watch Later Button -->
-                <button id="watch-later-btn" class="btn btn-outline-secondary me-2" data-movie-id="{{ movie.id }}">
-                    <i id="watch-later-icon"
-                        class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
-                    </i>
-                    {% if is_watch_later %} In Watch Later {% else %} Added to Watch Later{% endif %}
-                </button>
-                <!-- Add to Button -->
-                <button class="btn btn-outline-secondary">
-                    <i class="bi bi-plus"></i> Add to
-                </button>
+                {% if user.is_authenticated %}
+                    <!-- Watch Later Button -->
+                    <button id="watch-later-btn" class="btn btn-outline-secondary me-2" data-movie-id="{{ movie.id }}">
+                        <i id="watch-later-icon"
+                            class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
+                        </i>
+                        {% if is_watch_later %} In Watch Later {% else %} Added to Watch Later{% endif %}
+                    </button>
+                    <!-- Add to Button -->
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-plus"></i> Add to
+                    </button>
+                {% else %}
+                    <!-- Redirect to login page if the user is not authenticated -->
+                    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2">
+                        <i class="bi bi-lock"></i> Login to Add to Watch Later
+                    </a>
+                    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-lock"></i> Login to Add
+                    </a>
+                {% endif %}
             </div>
         </div>
+        
         <!-- Movie Details Section -->
         <div class="row">
             <div class="col-3">
