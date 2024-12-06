@@ -1,0 +1,49 @@
+name: Deploy Django App to VPS
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+            # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+       # Step 4: Deploy to vps
+      - name: Deploy using password-based SSH
+        env:
+          SSH_PASS: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          # Install sshpass for password-based SSH automation
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+          # SSH into VPS and deploy using git pull
+          sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd /${{ secrets.VPS_USER }}/movie_lover
+            git reset --hard  # Reset any local changes
+            git pull origin main  # Pull latest changes from GitHub
+            source venv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            systemctl restart gunicorn
+            systemctl restart nginx
+          EOF
+
