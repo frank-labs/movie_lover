@@ -108,7 +108,7 @@
         <h5>Other Suggested Videos</h5>
         <div class="row">
             {% for movie in suggested_movies|slice:"4:" %}
-            <div class="col-2">
+            <div class="col-2 mb-2 mt-2"> <!-- Added top and bottom margins -->
                 <a href="{% url 'detail' movie.id %}">
                     <div class="position-relative">
                         <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="img-fluid">
@@ -124,7 +124,4 @@
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
