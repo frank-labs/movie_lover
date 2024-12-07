@@ -163,4 +163,51 @@ class RemoveWatchLaterView(LoginRequiredMixin, View):
             return JsonResponse({"success": True})
         except:
             return JsonResponse({"success": False}, status=400)
-    
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+import json     
+class UpdateCollectionView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            data = json.loads(request.body)
+            collection = request.user.collections.get(pk=pk)
+            collection.name = data.get("name", collection.name)
+            collection.description = data.get("description", collection.description)
+            collection.save()
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=400)
+class DeleteCollectionView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            collection = request.user.collections.get(pk=pk)
+            collection.delete()
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=400)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def add_to_collections(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        movie_id = data.get('movie_id')
+        collection_ids = data.get('collections', [])
+        user = request.user
+
+        if user.is_authenticated:
+            for collection_id in collection_ids:
+                collection = user.collections.filter(pk=collection_id).first()
+                if collection:
+                    collection.movies.add(movie_id)
+
+            return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
