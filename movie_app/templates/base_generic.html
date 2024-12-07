@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   {% load static %}
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'movie_app/style.css' %}">
   <title>{% block title %}Movie Lover{% endblock %}</title>
   {% block styles %}{% endblock %}
@@ -70,7 +71,7 @@
                  <i class="bi bi-person-circle fs-5 ms-2"></i> <!-- Person Circle Icon with left margin -->
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                  <li><a class="dropdown-item" href="#">Collections</a></li>
+                  <li><a class="dropdown-item" href="{% url 'collection_list' %}">Collections</a></li>
                   <li><a class="dropdown-item" href="{% url 'watch_later' %}">Watch Later</a></li>
                   <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
               </ul>
@@ -100,20 +101,11 @@
     <p>&copy; 2024 Movie Lover</p>
   </footer>
 
-  <script src="{% static 'movie_app/my-script.js' %}"></script>
+ 
   <script src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js" charset="utf-8" async></script>
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- <script>
-    // Add CSRF token to every fetch request
-    document.cookie.split("; ").forEach(function (cookie) {
-      if (cookie.startsWith("csrftoken=")) {
-        const csrfToken = cookie.split("=")[1];
-        window.csrfToken = csrfToken;
-      }
-    });
-  </script> -->
-
+  <script src="{% static 'movie_app/base.js' %}"></script>
 </body>
 
 </html>
