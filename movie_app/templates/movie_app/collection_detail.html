@@ -1,15 +1,39 @@
 {% extends 'base_generic.html' %}
-
+{% load static %} 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'movie_app/index.css' %}">
+{% endblock %}
 {% block content %}
   <h2>Collection: {{ collection.name }}</h2>
   <p>{{ collection.description }}</p>
 
   <h3>Movies in this collection:</h3>
-  <ul>
-    {% for movie in collection.movies.all %}
-      <li>{{ movie.title }}</li>
-    {% endfor %}
-  </ul>
 
-  <a href="{% url 'collection_list' %}">Back to Collections</a>
+  <!-- Movies Grid -->
+  <div class="movies-grid">
+      {% for movie in collection.movies.all %}
+      <div class="movie-item position-relative">
+          <!-- Link the image to the detail page -->
+          <a href="{% url 'detail' movie.pk %}" class="movie-link">
+              <div class="movie-image-container">
+                  <img src="{{ movie.medium_cover_image }}" alt="{{ movie.title }}" class="movie-image">
+                  <div class="overlay">
+                      <i class="bi bi-play-circle"></i> <!-- Play icon -->
+                  </div>
+                  <div class="movie-title">{{ movie.title }}</div>
+              </div>
+          </a>
+
+        <button 
+            class="remove-watch-later-btn btn btn-danger position-absolute top-0 end-0"
+            data-movie-id="{{ movie.id }}" 
+            title="Remove from Watch Later">
+            &times;
+        </button>
+      </div>
+      {% endfor %}
+  </div>
+
+  <a href="{% url 'collection_list' %}" class="btn btn-secondary mt-3">Back to Collections</a>
+  <script src="{% static 'movie_app/collection_detail.js' %}"></script>
 {% endblock %}
