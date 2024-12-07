@@ -20,3 +20,23 @@
   width: auto; /* Maintain the aspect ratio */
   object-fit: contain; /* Ensure the image is not stretched or distorted */
 }
+/* Make the footer a specific color and width */
+footer {
+  background-color: #2b8c67; /* Set the footer color */
+  color: white; /* Make text readable */
+  text-align: center; /* Center-align text */
+  padding: 1em 0; /* Add padding for some vertical space */
+  width: 100%; /* Ensure it spans the entire width */
+}
+
+/* Ensure the footer stays at the bottom of the page */
+body {
+  display: flex;
+  flex-direction: column; /* Make the body content stack vertically */
+  min-height: 100vh; /* Ensure the body takes up the full viewport height */
+  margin: 0; /* Remove default margins */
+}
+
+.container {
+  flex: 1; /* Push the footer to the bottom when content is short */
+}
