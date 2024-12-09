@@ -18,29 +18,67 @@
         <div class="row">
             <div class="col text-end">
                 {% if user.is_authenticated %}
-                    <!-- Watch Later Button -->
-                    <button id="watch-later-btn" class="btn btn-outline-secondary me-2" data-movie-id="{{ movie.id }}">
-                        <i id="watch-later-icon"
-                            class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
-                        </i>
-                        {% if is_watch_later %} In Watch Later {% else %} Added to Watch Later{% endif %}
-                    </button>
-                    <!-- Add to Button -->
-                    <button class="btn btn-outline-secondary">
-                        <i class="bi bi-plus"></i> Add to
-                    </button>
+                <!-- Watch Later Button -->
+                <button id="watch-later-btn" class="btn btn-outline-secondary me-2" data-movie-id="{{ movie.id }}">
+                    <i id="watch-later-icon"
+                        class="{% if is_watch_later %}bi bi-check-circle text-success{% else %}bi bi-clock{% endif %}">
+                    </i>
+                    {% if is_watch_later %} In Watch Later {% else %} Added to Watch Later {% endif %}
+                </button>
+
+                <!-- Add to Button with data-movie-id -->
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addToCollectionModal"
+                    data-movie-id="{{ movie.id }}">
+                    <i class="bi bi-plus"></i> Add to
+                </button>
                 {% else %}
-                    <!-- Redirect to login page if the user is not authenticated -->
-                    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2">
-                        <i class="bi bi-lock"></i> Login to Add to Watch Later
-                    </a>
-                    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
-                        <i class="bi bi-lock"></i> Login to Add
-                    </a>
+                <!-- Redirect to login page if the user is not authenticated -->
+                <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-lock"></i> Login to Add to Watch Later
+                </a>
+                <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-lock"></i> Login to Add
+                </a>
                 {% endif %}
             </div>
         </div>
-        
+
+
+        <div class="modal fade" id="addToCollectionModal" tabindex="-1" aria-labelledby="addToCollectionModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addToCollectionModalLabel">Add Movie to Collections</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="add-to-collections-form">
+                        <div class="modal-body">
+                            <p>Select the collections to add this movie to:</p>
+                            {% for collection in user.collections.all %}
+                            <div class="form-check">
+
+                                <input class="form-check-input" type="checkbox" name="collections"
+                                    value="{{ collection.id }}" id="collection-{{ collection.id }}">
+                                <label class="form-check-label" for="collection-{{ collection.id }}">
+                                    {{ collection.name }}
+                                </label>
+                            </div>
+                            {% empty %}
+                            <p>You have no collections yet. <a href="{% url 'create_collection' %}">Create one</a>!</p>
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="submit-add-to-collections" data-movie-id="{{ movie.id }}"  data-url="{% url 'add_to_collections' %}">Add to Selected Collections</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Movie Details Section -->
         <div class="row">
             <div class="col-3">
@@ -54,11 +92,11 @@
                     <div class="col">
                         <p><strong>Genres:</strong>
                             {% for genre in movie.genres.all %}
-                                <a href="{% url 'movies_by_genre' genre_name=genre.name %}">{{ genre.name }}</a>
-                                {% if not forloop.last %}, {% endif %}
+                            <a href="{% url 'movies_by_genre' genre_name=genre.name %}">{{ genre.name }}</a>
+                            {% if not forloop.last %}, {% endif %}
                             {% endfor %}
                         </p>
-                        
+
                         <p><strong>Year:</strong> {{ movie.year }}</p>
                         <p><strong>Language:</strong> {{ movie.language }}</p>
                     </div>
@@ -124,4 +162,6 @@
         </div>
     </div>
 </div>
+
+<script src="{% static 'movie_app/detail.js' %}"></script>
 {% endblock %}

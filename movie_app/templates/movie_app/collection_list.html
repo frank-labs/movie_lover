@@ -1,17 +1,46 @@
 {% extends 'base_generic.html' %}
-
+{% load static %}
 {% block content %}
-  <h2>Your Collections</h2>
-  
-  {% if collections %}
-    <ul>
-      {% for collection in collections %}
-        <li>
-          <a href="{% url 'collection_detail' collection.pk %}">{{ collection.name }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You have no collections yet.</p>
-  {% endif %}
+<h2>Your Collections</h2>
+
+{% if collections %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for collection in collections %}
+    <tr data-id="{{ collection.pk }}">
+      <!-- Name Column -->
+      <td class="collection-name">
+        <a href="{% url 'collection_detail' collection.pk %}" class="display">{{ collection.name }}</a>
+        <input type="text" class="edit-input form-control d-none" value="{{ collection.name }}">
+      </td>
+    
+      <!-- Description Column -->
+      <td class="collection-description">
+        <a href="{% url 'collection_detail' collection.pk %}" class="display">{{ collection.description }}</a>
+        <textarea class="edit-input form-control d-none">{{ collection.description }}</textarea>
+      </td>
+    
+      <!-- Actions Column -->
+      <td>
+        <button class="btn btn-primary btn-sm check-btn d-none">✔</button>
+        <button class="btn btn-secondary btn-sm edit-btn">✏️</button>
+        <button class="btn btn-danger btn-sm delete-btn">🗑️</button>
+        <a href="{% url 'collection_detail' collection.pk %}" class="btn btn-info btn-sm view-btn">👁️ View</a>
+      </td>
+    </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>
+{% else %}
+<p>You have no collections yet.</p>
+{% endif %}
+<script src="{% static 'movie_app/collection_list.js' %}"></script>
 {% endblock %}
