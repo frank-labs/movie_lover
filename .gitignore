@@ -1,11 +1,7 @@
-./fetch_movies.py
-movie_app/_pycache_
 movie_app/__pycache__
 movie_app/migrations/__pycache__
 movie_lover/__pycache__
-movie_lover/_pycache_
-fetch_movies.py
 
-movie_lover/__pycache__
+fetch_movies.py
 
 movie_app/templatetags/__pycache__

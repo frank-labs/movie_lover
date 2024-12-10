@@ -16,4 +16,5 @@ urlpatterns = [
     path("watch-later/remove/<int:movie_id>/", RemoveWatchLaterView.as_view(), name="remove_watch_later"),
     path('movies/genre/<str:genre_name>/', views.IndexView.as_view(), name='movies_by_genre'),  # Genre-based movie listing
     path('add-to-collections/', add_to_collections, name='add_to_collections'),
+    path('dmca-disclaimer/', views.dmca_disclaimer, name='dmca_disclaimer'),
 ]

@@ -211,3 +211,8 @@ def add_to_collections(request):
             return JsonResponse({'success': True})
 
     return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+
+from django.shortcuts import render
+
+def dmca_disclaimer(request):
+    return render(request, 'movie_app/dmca_disclaimer.html')

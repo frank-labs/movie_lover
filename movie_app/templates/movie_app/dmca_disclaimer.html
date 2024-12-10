@@ -1,0 +1,35 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+DMCA Disclaimer
+{% endblock %}
+
+{% block content %}
+<h1>DMCA Disclaimer</h1>
+<p>
+  Movie Lover respects the intellectual property rights of others and expects its users to do the same.
+</p>
+<p>
+  If you believe that your copyrighted material has been used in a way that constitutes copyright infringement
+  and appears on this site, please provide a written communication that includes the following information:
+</p>
+<ul>
+  <li>Your name, address, telephone number, and email address.</li>
+  <li>A description of the copyrighted work that you claim has been infringed.</li>
+  <li>The exact URL or location where the alleged infringing material is located on this site.</li>
+  <li>A statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law.</li>
+  <li>A statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner's behalf.</li>
+  <li>Your electronic or physical signature.</li>
+</ul>
+<p>
+  Please send your DMCA takedown notice to the following email address:
+</p>
+<p><strong>Email:</strong> dmca@movielover.com</p>
+<p>
+  Upon receipt of a valid DMCA notice, we will remove or disable access to the infringing material and notify the user responsible for the content. If you believe the removal was a mistake, you may submit a counter-notification.
+</p>
+<p>
+  Thank you for helping us maintain a respectful and lawful environment.
+</p>
+<a href="{% url 'index' %}">Return to Home</a>
+{% endblock %}
