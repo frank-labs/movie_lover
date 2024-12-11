@@ -216,3 +216,46 @@ from django.shortcuts import render
 
 def dmca_disclaimer(request):
     return render(request, 'movie_app/dmca_disclaimer.html')
+
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.contrib.postgres.search import SearchVector
+from .models import Movie
+
+def search(request):
+    query = request.GET.get('q', '')
+    page_number = request.GET.get('page')
+
+    if query:
+        # Priority: title, title_english, title_long, genre
+        search_results = Movie.objects.filter(
+            Q(title__icontains=query) | 
+            Q(title_english__icontains=query) |
+            Q(title_long__icontains=query) |
+            Q(genres__name__icontains=query)
+        ).distinct()  # Ensure unique movies
+
+        # If no result, use full-text search on summary, description_full, and synopsis
+        if not search_results.exists():
+            search_results = Movie.objects.annotate(
+                search=SearchVector('summary', weight='A') +
+                       SearchVector('description_full', weight='B') +
+                       SearchVector('synopsis', weight='C')
+            ).filter(search=query).order_by('-search').distinct()  # Ensure unique movies
+    else:
+        search_results = Movie.objects.none()  # No results if no query is provided
+    
+    # Pagination logic
+    paginator = Paginator(search_results, 40)  # 40 results per page
+    page_obj = paginator.get_page(page_number)
+
+    # Determine the range for previous and next pages
+    previous_pages = [num for num in page_obj.paginator.page_range if num < page_obj.number and page_obj.number - num <= 3]
+    next_pages = [num for num in page_obj.paginator.page_range if num > page_obj.number and num - page_obj.number <= 3]
+
+    return render(request, 'movie_app/search_results.html', {
+        'movies': page_obj,
+        'query': query,
+        'previous_pages': previous_pages,
+        'next_pages': next_pages,
+    })

@@ -1,25 +1,23 @@
 {% extends "base_generic.html" %}
 {% load static %}
+
 {% block styles %}
 <link rel="stylesheet" href="{% static 'movie_app/index.css' %}">
 {% endblock %}
+
 {% block content %}
-<!-- Sorting Links -->
-<!-- <div>
-    <a href="?sort_by=date_uploaded">Sort by Date</a> |
-    <a href="?sort_by=rating">Sort by Rating</a> |
-    <a href="?sort_by=year">Sort by Year</a>
-</div> -->
-<!-- Movies Grid -->
+<!-- Search Header -->
 <h2>
     {% if query %}
     Search Results for "{{ query }}"
-    {% elif genre%}
+    {% elif genre %}
     Movies in {{ genre.name }}
     {% elif is_watch_later_view %}
     My Watch Later Movies
     {% endif %}
 </h2>
+
+<!-- Movies Grid -->
 <div class="movies-grid">
     {% for movie in movies %}
     <div class="movie-item position-relative">
@@ -34,7 +32,7 @@
             </div>
         </a>
 
-        <!-- Red "X" Button -->
+        <!-- Red "X" Button for Watch Later -->
         {% if is_watch_later_view %}
         <button class="remove-watch-later-btn btn btn-danger position-absolute top-0 end-0"
             data-movie-id="{{ movie.id }}" title="Remove from Watch Later">
@@ -47,18 +45,17 @@
     {% endfor %}
 </div>
 
-
 <!-- Pagination Links -->
 <div class="pagination">
     <span class="step-links">
         <!-- First Page Link -->
         {% if page_obj.has_previous %}
-        <a href="?page=1&sort_by={{ request.GET.sort_by }}">First</a>
+        <a href="?page=1&q={{ query }}">First</a>
         {% endif %}
 
         <!-- Previous 3 Pages -->
         {% for page_num in previous_pages %}
-        <a href="?page={{ page_num }}&sort_by={{ request.GET.sort_by }}">{{ page_num }}</a>
+        <a href="?page={{ page_num }}&q={{ query }}">{{ page_num }}</a>
         {% endfor %}
 
         <!-- Current Page -->
@@ -68,15 +65,15 @@
 
         <!-- Next 3 Pages -->
         {% for page_num in next_pages %}
-        <a href="?page={{ page_num }}&sort_by={{ request.GET.sort_by }}">{{ page_num }}</a>
+        <a href="?page={{ page_num }}&q={{ query }}">{{ page_num }}</a>
         {% endfor %}
-
 
         <!-- Last Page Link -->
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.paginator.num_pages }}&sort_by={{ request.GET.sort_by }}">Last</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Last</a>
         {% endif %}
     </span>
 </div>
+
 <script src="{% static 'movie_app/index.js' %}"></script>
-{% endblock %} <!-- Close the content block here -->
+{% endblock %}

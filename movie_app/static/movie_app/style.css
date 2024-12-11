@@ -6,8 +6,7 @@
   }
 
   .navbar .input-group input {
-    width: 300px; /* Adjust the width as needed */
-    border-radius: 50px;
+    width: 300px; 
   }
   .navbar .input-group button {
     border-radius: 50px; /* Make the button more rounded */

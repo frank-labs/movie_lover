@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("<int:pk>/", views.DetailView.as_view(), name="detail"),
+    path('search/', views.search, name='search'),
     path('create/', CollectionCreateView.as_view(), name='create_collection'),
     path('collections/', CollectionListView.as_view(), name='collection_list'),  # List collections
     path('collections/<int:pk>/', CollectionDetailView.as_view(), name='collection_detail'), 
