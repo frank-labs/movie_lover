@@ -18,13 +18,25 @@
             <form method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
+                
                 {% for field in form %}
+                    {% if field.name == 'remember' %}
+                    <div class="form-check mb-3">
+                        <!-- Render remember me checkbox -->
+                        {{ field|add_class:"form-check-input" }}
+                        <label class="form-check-label" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                    </div>
+                    {% else %}
                     <div class="mb-3">
                         {{ field.label_tag }}
                         {{ field|add_class:"form-control" }}
                         {{ field.errors }}
                     </div>
+                    {% endif %}
                 {% endfor %}
+                
                 <div class="d-grid mb-3">
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </div>

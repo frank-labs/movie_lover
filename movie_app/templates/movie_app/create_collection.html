@@ -1,11 +1,42 @@
 {% extends 'base_generic.html' %}
-
+{% load form_filters %} 
+{% load static %} 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'movie_app/collection_create.css' %}">
+{% endblock %}
 {% block content %}
-  <h2>Create New Collection</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4 text-center">Create New Collection</h2>
 
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Create Collection</button>
-  </form>
+            <!-- Display any messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Create Collection Form -->
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field|add_class:"form-control" }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary w-100">Create Collection</button>
+                </div>
+            </form>
+
+            <!-- Optional additional links or information can go here -->
+        </div>
+    </div>
+</div>
 {% endblock %}

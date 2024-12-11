@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 {% load movie_filters %}
-<div class="row">
+<div class="row  d-flex justify-content-between">
     <!-- Movie Video Section -->
     <div class="col-md-7">
         <div class="row">
@@ -34,10 +34,10 @@
                 {% else %}
                 <!-- Redirect to login page if the user is not authenticated -->
                 <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2">
-                    <i class="bi bi-lock"></i> Login to Add to Watch Later
+                    <i class="bi bi-lock"></i> Add to Watch Later
                 </a>
                 <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
-                    <i class="bi bi-lock"></i> Login to Add
+                    <i class="bi bi-lock"></i> Add to...
                 </a>
                 {% endif %}
             </div>
@@ -117,7 +117,7 @@
         </div>
     </div>
     <!-- Suggested Videos Section (Full Height) -->
-    <div class="col-md-4 suggested-videos-panel">
+    <div class="col-md-4 suggested-videos-panel ml-auto">
         <div class="suggested-videos">
             <h5>Suggested Videos</h5>
             <div class="row">
@@ -143,7 +143,7 @@
 <!-- Additional Suggested Videos Section (Remaining Movies) -->
 <div class="row">
     <div class="col-12">
-        <h5>Other Suggested Videos</h5>
+        <h5>Suggested Videos</h5>
         <div class="row">
             {% for movie in suggested_movies|slice:"4:" %}
             <div class="col-2 mb-2 mt-2"> <!-- Added top and bottom margins -->
