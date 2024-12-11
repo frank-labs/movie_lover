@@ -248,13 +248,14 @@ def search(request):
     # Pagination logic
     paginator = Paginator(search_results, 40)  # 40 results per page
     page_obj = paginator.get_page(page_number)
-
+    
     # Determine the range for previous and next pages
     previous_pages = [num for num in page_obj.paginator.page_range if num < page_obj.number and page_obj.number - num <= 3]
     next_pages = [num for num in page_obj.paginator.page_range if num > page_obj.number and num - page_obj.number <= 3]
 
     return render(request, 'movie_app/search_results.html', {
         'movies': page_obj,
+        'page_obj': page_obj,
         'query': query,
         'previous_pages': previous_pages,
         'next_pages': next_pages,
