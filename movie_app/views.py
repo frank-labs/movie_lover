@@ -1,26 +1,21 @@
-from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
-from django.db.models import F, Q
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.views import generic
-from .forms import CollectionForm
-from .models import Movie
-from django.shortcuts import render
-from django.views import generic
-from .models import Movie,Collection
+import json
 import logging
-from django.db.models import OuterRef, Subquery, IntegerField, Max, F, JSONField
-from .forms import CollectionForm
-# Get a logger instance
-logger = logging.getLogger(__name__)
-from django.urls import reverse_lazy
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import F, Q, OuterRef, Subquery, IntegerField, Max, JSONField
+from django.http import HttpResponseRedirect, JsonResponse
+from django.urls import reverse, reverse_lazy
+from django.views import generic
 from django.contrib.auth.decorators import login_required
-from .models import Movie,Genre
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.postgres.search import SearchVector
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import Movie, Collection, Genre
+from .forms import CollectionForm
+
 
 class IndexView(generic.ListView):
     model = Movie
@@ -147,11 +142,6 @@ class WatchLaterView(LoginRequiredMixin, generic.ListView):
         context['is_watch_later_view'] = True  # Pass the flag to the template
         return context
     
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import View
 class RemoveWatchLaterView(LoginRequiredMixin, View):
     def post(self, request, movie_id):
         """
@@ -164,12 +154,6 @@ class RemoveWatchLaterView(LoginRequiredMixin, View):
         except:
             return JsonResponse({"success": False}, status=400)
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import View
-import json     
 class UpdateCollectionView(LoginRequiredMixin, View):
     def post(self, request, pk):
         try:
@@ -190,9 +174,6 @@ class DeleteCollectionView(LoginRequiredMixin, View):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)}, status=400)
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
 @csrf_exempt
 def add_to_collections(request):
@@ -212,15 +193,10 @@ def add_to_collections(request):
 
     return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
-from django.shortcuts import render
 
 def dmca_disclaimer(request):
     return render(request, 'movie_app/dmca_disclaimer.html')
 
-from django.core.paginator import Paginator
-from django.db.models import Q
-from django.contrib.postgres.search import SearchVector
-from .models import Movie
 
 def search(request):
     query = request.GET.get('q', '')

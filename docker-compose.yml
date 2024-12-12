@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  django:
+    image: franklabs/movie-lover
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount static files so the external nginx server can serve them
+      - ./staticfiles:/app/static
+      # Mount the PostgreSQL service file
+      - C:\Users\zw\AppData\Roaming\postgresql\.pg_service.conf:/etc/pg_service.conf:ro
+    environment:
+      # Environment variable for the PostgreSQL service file location
+      PGSERVICEFILE: /etc/pg_service.conf
+    ports:
+      - "8000:8000"
+    command: gunicorn --bind 0.0.0.0:8000 movie_lover.wsgi:application
