@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from decouple import config
-
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -72,7 +70,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
 ]
 
 MIDDLEWARE = [
@@ -91,6 +88,7 @@ INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     "localhost",
+    "movielover.optiontruth.com",
     "192.168.0.194"
     # ...
 ]
