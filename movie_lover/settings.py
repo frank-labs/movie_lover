@@ -30,7 +30,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 ALLOWED_HOSTS = ['localhost','192.168.0.194','0.0.0.0','127.0.0.1','optiontruth.com','movielover.optiontruth.com']
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.optiontruth.com', 'http://*.optiontruth.com',
+]
 
 # Application definition
 # settings.py
