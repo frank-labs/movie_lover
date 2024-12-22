@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['localhost','192.168.0.194','0.0.0.0','127.0.0.1','optiontruth.
 CSRF_TRUSTED_ORIGINS = [
     'https://*.optiontruth.com', 'http://*.optiontruth.com',
 ]
-
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 # Application definition
 # settings.py
 
