@@ -49,7 +49,7 @@
             <!-- Social Login Buttons -->
             {% get_providers as socialaccount_providers %}
             {% if socialaccount_providers %}
-                <div class="mt-4">
+                <div class="mt-4 text-center">
                     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
                 </div>
             {% endif %}
